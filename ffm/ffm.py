@@ -210,7 +210,8 @@ class FFM():
     
     def get_W(self):
         '''
-        Returns the model vectors W of shape n x k, where n is the number of feature indexes.
+        Returns the model vectors W of shape n x m x k, where n is the number of feature indexes
+        and m is the number of fields.
         
         Given input X, the computation of probabilites can then be done in python as follows:
         
