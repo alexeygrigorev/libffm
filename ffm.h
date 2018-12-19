@@ -88,6 +88,10 @@ ffm_float* ffm_predict_batch(ffm_problem &data, ffm_model &model);
 
 void ffm_cleanup_prediction(ffm_float* f);
 
+ffm_int ffm_get_k_aligned(ffm_int k);
+
+ffm_int ffm_get_kALIGN();
+
 } // namespace ffm
 
 #endif // _LIBFFM_H
