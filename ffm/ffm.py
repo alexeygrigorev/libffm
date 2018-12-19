@@ -207,35 +207,37 @@ class FFM():
             self.model.iteration(ffm_data)
 
         return self
-		
-	def get_W(self):
-		'''
-		Returns the model vectors W of shape n x k, where n is the number of feature indexes.
-		
-		Given input X, the computation of probabilites can then be done in python as follows:
-		
-		import itertools
-		i = 0 #the sample index for which we want to compute probabilities
-		sig = lambda x: 1/(1+np.exp(-x)) #sigmoid function
-		pairs = itertools.combinations(X[i],2)
-		proba = sig(sum( (v0*W[i0,j1]) @ (v1*W[i1,j0]) for (j0,i0,v0), (j1,i1,v1) in pairs ))
-		
-		This shoud be the same as model.predict(X)[i]		
-		'''
-			m = self._model.m
-		n = self._model.n
-		k = self._model.k
+    
+    def get_W(self):
+        '''
+        Returns the model vectors W of shape n x k, where n is the number of feature indexes.
+        
+        Given input X, the computation of probabilites can then be done in python as follows:
+        
+        import itertools
+        i = 0 #the sample index for which we want to compute probabilities
+        sig = lambda x: 1/(1+np.exp(-x)) #sigmoid function
+        pairs = itertools.combinations(X[i],2)
+        proba = sig(sum( (v0*W[i0,j1]) @ (v1*W[i1,j0]) for (j0,i0,v0), (j1,i1,v1) in pairs ))
+        print('python computation:',proba)
+    
+        #to crosscheck, this should be the same when ffm_data is generated from X:
+        print('C computation:',model.predict(ffm_data)[i])				
+        '''
+        m = self._model.m
+        n = self._model.n
+        k = self._model.k
 
-		k_aligned = self._lib.ffm_get_k_aligned(k)
-		kALIGN = self._lib.ffm_get_kALIGN()
-		align0 = 2*k_aligned
-		align1 = m*align0
+        k_aligned = _lib.ffm_get_k_aligned(k)
+        kALIGN = _lib.ffm_get_kALIGN()
+        align0 = 2*k_aligned
+        align1 = m*align0
 
-		W = np.ctypeslib.as_array(self._model.W,(1,n*align1))[0]
-		W = W.reshape((n,m,align0))
-		I = np.arange(k) + ( np.floor(np.arange(align0)/kALIGN).astype(int)*kALIGN )[:k]
-		W = W[:,:,I]
-		return W
+        W = np.ctypeslib.as_array(self._model.W,(1,n*align1))[0]
+        W = W.reshape((n,m,align0))
+        I = np.arange(k) + ( np.floor(np.arange(align0)/kALIGN).astype(int)*kALIGN )[:k]
+        W = W[:,:,I]
+        return W
 
 
 def read_model(path):
