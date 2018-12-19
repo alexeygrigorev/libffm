@@ -70,7 +70,6 @@ ffm_long get_w_size(ffm_model &model) {
     return (ffm_long) model.n * model.m * k_aligned * 2;
 }
 
-
 #if defined USESSE
 inline ffm_float wTx(
     ffm_node *begin,
@@ -700,10 +699,7 @@ ffm_problem ffm_convert_data(ffm_line* data, ffm_int num_lines) {
     return result;
 }
 
-ffm_model ffm_init_model(ffm_problem& problem, ffm_parameter params) {
-		// to suppress warning for not used functions
-		// these functions are only used in the python wrapper
-		
+ffm_model ffm_init_model(ffm_problem& problem, ffm_parameter params) {		
     int n = problem.n;
     int m = problem.m;
     return init_model(n, m, params);
