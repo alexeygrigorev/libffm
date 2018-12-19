@@ -699,7 +699,7 @@ ffm_problem ffm_convert_data(ffm_line* data, ffm_int num_lines) {
     return result;
 }
 
-ffm_model ffm_init_model(ffm_problem& problem, ffm_parameter params) {		
+ffm_model ffm_init_model(ffm_problem& problem, ffm_parameter params) {
     int n = problem.n;
     int m = problem.m;
     return init_model(n, m, params);
