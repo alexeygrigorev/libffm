@@ -854,4 +854,12 @@ void ffm_cleanup_data(ffm_problem *p) {
     delete [] p->scales;
 }
 
+ffm_int ffm_get_kALIGN() {
+    return kALIGN;
+}
+
+ffm_int ffm_get_k_aligned(ffm_int k) {
+    return (ffm_int) ceil((ffm_float)k / kALIGN) * kALIGN;
+}
+
 } // namespace ffm
