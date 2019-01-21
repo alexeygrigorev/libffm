@@ -239,7 +239,27 @@ class FFM():
         I = np.arange(k) + ( np.floor(np.arange(align0)/kALIGN).astype(int)*kALIGN )[:k]
         W = W[:,:,I]
         return W
+   
+    def set_W(self,W):
+        """
+        Sets the model weights according to W
+        """
+        m = self._model.m
+        n = self._model.n
+        k = self._model.k
 
-
+        k_aligned = _lib.ffm_get_k_aligned(k)
+        kALIGN = _lib.ffm_get_kALIGN()
+        align0 = 2*k_aligned
+        align1 = m*align0
+   
+        W_ = np.ctypeslib.as_array(self._model.W,(1,n*align1))[0]
+        W_ = W_.reshape((n,m,align0))
+        I = np.arange(k) + ( np.floor(np.arange(align0)/kALIGN).astype(int)*kALIGN )[:k]
+        W_[:,:,I] = W
+        
+        self._model.W = np.ctypeslib.as_ctypes(W_.reshape(n*align1))
+    
+    
 def read_model(path):
     return FFM().read_model(path)
