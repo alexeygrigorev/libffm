@@ -1,0 +1,8 @@
+# C
+*.so
+*.o
+
+# Python
+dist/
+build/
+*.egg-info/

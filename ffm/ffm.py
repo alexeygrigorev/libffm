@@ -1,11 +1,6 @@
 # coding: utf-8
 
 import os
-path = os.path.dirname(__file__)
-lib_path = path + '/libffm.so'
-
-# binding code
-
 import numpy as np
 import ctypes
 
@@ -61,12 +56,20 @@ class FFM_Problem(ctypes.Structure):
         ("m", ctypes.c_int),
     ]
 
+
+def get_lib_path():
+    basedir = os.path.dirname(__file__)
+    for f in os.listdir(basedir):
+        if f.startswith('libffm') and f.endswith('.so'):
+            return os.path.join(basedir, f)
+    return ""
+
 FFM_Node_ptr = ctypes.POINTER(FFM_Node)
 FFM_Line_ptr = ctypes.POINTER(FFM_Line)
 FFM_Model_ptr = ctypes.POINTER(FFM_Model)
 FFM_Problem_ptr = ctypes.POINTER(FFM_Problem)
 
-_lib = ctypes.cdll.LoadLibrary(lib_path)
+_lib = ctypes.cdll.LoadLibrary(get_lib_path())
 
 _lib.ffm_convert_data.restype = FFM_Problem
 _lib.ffm_convert_data.argtypes = [FFM_Line_ptr, ctypes.c_int]
