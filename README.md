@@ -4,9 +4,7 @@ This is a python wrapped for LibFFM library writen in C++
 
 Installing it:
 
-	make so
-	mv libffm.so ffm
-	python setup.py install
+	python setup.py install  # or python setup.py develop
 
 
 Using it:
